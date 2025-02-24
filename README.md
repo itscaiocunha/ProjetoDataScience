@@ -9,7 +9,7 @@ Cada membro da equipe ficou responsável por uma ou mais unidades do projeto, ga
 
 * Análise Exploratória de Dados: Realizar a limpeza, transformação e visualização de dados, identificando tendências, padrões e outliers.
 
-* DevOps: Automação de processos de integração e entrega contínua, garantindo escalabilidade e eficiência na infraestrutura de dados.
+* DevOps: Configuração de infraestrutura como código, implementação de pipelines CI/CD e monitoramento de desempenho dos sistemas.
 
 **Gian:**
 
@@ -17,7 +17,7 @@ Cada membro da equipe ficou responsável por uma ou mais unidades do projeto, ga
 
 **Haryel:**
 
-* DevOps: Configuração de infraestrutura como código, implementação de pipelines CI/CD e monitoramento de desempenho dos sistemas.
+* DevOps: Automação de processos de integração e entrega contínua, garantindo escalabilidade e eficiência na infraestrutura de dados.
 
 **Jackeline:**
 
