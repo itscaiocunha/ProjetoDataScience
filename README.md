@@ -5,21 +5,21 @@ Cada membro da equipe ficou responsável por uma ou mais unidades do projeto, ga
 
 ### Membros da Equipe e Responsabilidades
 
-**Caio:**
+**Caio Grilo da Cunha (22000245):**
 
 * Análise Exploratória de Dados: Realizar a limpeza, transformação e visualização de dados, identificando tendências, padrões e outliers.
 
 * DevOps: Configuração de infraestrutura como código, implementação de pipelines CI/CD e monitoramento de desempenho dos sistemas.
 
-**Gian:**
+**Gian Carlos de Freitas Moroni (22000843):**
 
 * Probabilidade e Estatística: Aplicação de métodos estatísticos para análise de dados, elaboração de modelos probabilísticos e geração de insights confiáveis.
 
-**Haryel:**
+**Haryel Araújo de Oliveira Caliari (22001470):**
 
 * DevOps: Automação de processos de integração e entrega contínua, garantindo escalabilidade e eficiência na infraestrutura de dados.
 
-**Jackeline:**
+**Jackeline Ayumi Kanekiyo (22001803):**
 
 * Big Data: Gerenciamento e processamento de grandes volumes de dados, implementação de arquiteturas distribuídas e otimização da performance dos sistemas de dados.
 
