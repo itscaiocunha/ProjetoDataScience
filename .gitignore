@@ -1,3 +1,17 @@
-*.log
+# Dados
+data/processed/
+data/raw/dados_ist.csv  # Remova isso se quiser versionar os dados originais
+
+# Virtualenv
+venv/
+
+# Vagrant
+.vagrant/
+
+# Python
 __pycache__/
-*.csv
+*.pyc
+
+# R
+.RData
+.Rhistory

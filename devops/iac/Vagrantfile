@@ -1,0 +1,94 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "2048"
+    vb.cpus = 2
+  end
+
+  # ==================== VM1: Gerador de Dados ====================
+  config.vm.define "data_generator" do |gen|
+    gen.vm.box = "ubuntu/focal64"
+    gen.vm.network "private_network", ip: "192.168.56.10"
+    gen.vm.hostname = "data-generator"
+
+    # Sincroniza pastas necessárias
+    gen.vm.synced_folder "./scripts", "/vagrant/scripts"
+    gen.vm.synced_folder "./data", "/vagrant/data"
+
+    # Provisionamento
+    gen.vm.provision "shell", inline: <<-SHELL
+      # Instala Docker
+      sudo apt-get update
+      sudo apt-get install -y docker.io docker-compose
+      sudo usermod -aG docker vagrant
+
+      # Build e execução do container
+      cd /vagrant/devops/docker/data-generator
+      docker-compose build
+      docker-compose up -d
+    SHELL
+  end
+
+  # ==================== VM2: Banco de Dados ====================
+  config.vm.define "database" do |db|
+    db.vm.box = "ubuntu/focal64"
+    db.vm.network "private_network", ip: "192.168.56.20"
+    db.vm.hostname = "mysql-db"
+
+    # Configuração de recursos
+    db.vm.provider "virtualbox" do |vb|
+      vb.memory = "4096"
+      vb.cpus = 2
+    end
+
+    # Provisionamento
+    db.vm.provision "shell", inline: <<-SHELL
+      # Instala Docker
+      sudo apt-get update
+      sudo apt-get install -y docker.io
+
+      # Configura MySQL
+      docker run -d \
+        --name mysql \
+        -p 3306:3306 \
+        -e MYSQL_ROOT_PASSWORD=senha123 \
+        -e MYSQL_DATABASE=ist_data \
+        -v /vagrant/devops/docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql \
+        mysql:8.0 \
+        --innodb_buffer_pool_size=1G
+    SHELL
+  end
+
+  # ==================== VM3: Dashboard ====================
+  config.vm.define "dashboard" do |dash|
+    dash.vm.box = "ubuntu/focal64"
+    dash.vm.network "private_network", ip: "192.168.56.30"
+    dash.vm.hostname = "shiny-dashboard"
+    dash.vm.network "forwarded_port", guest: 3838, host: 3838
+
+    # Provisionamento
+    dash.vm.provision "shell", inline: <<-SHELL
+      # Instala Docker
+      sudo apt-get update
+      sudo apt-get install -y docker.io
+
+      # Configura Shiny Server
+      docker run -d \
+        --name shiny \
+        -p 3838:3838 \
+        -v /vagrant/docs/dashboard:/srv/shiny-server \
+        -v /vagrant/data/processed:/srv/shiny-server/data \
+        rocker/shiny-verse:4.2
+    SHELL
+  end
+
+  # ==================== Provisionamento Global ====================
+  config.vm.provision "shell", inline: <<-SHELL
+    echo "✔ Todas as VMs foram provisionadas"
+    echo "Gerador de Dados: 192.168.56.10"
+    echo "Banco de Dados: 192.168.56.20:3306"
+    echo "Dashboard: http://192.168.56.30:3838"
+  SHELL
+end
