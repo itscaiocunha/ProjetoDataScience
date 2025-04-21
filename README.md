@@ -1,46 +1,28 @@
-# Projeto: AUTOMAÇÃO E ESCALABILIDADE DE PIPELINES DE BIG DATA E ANÁLISE DE DADOS
-### Estrutura Organizacional da Equipe
+# UNIFEOB - PI Data Science 2025.1  
+**Título do Projeto:** Automação e Escalabilidade de Pipelines de Big Data  
+**Subtítulo:** Impacto de doenças IST no Brasil
 
-Cada membro da equipe ficou responsável por uma ou mais unidades do projeto, garantindo uma distribuição equilibrada das tarefas.
+## 👥 Equipe  
+| Nome          |RA          |Papel (SM/PO/Membro) | Responsabilidades                          |  
+|---------------|------------|---------------------|--------------------------------------------|
+| Caio Grilo da Cunha |22000246 |Product Owner |Priorização de tarefas, validação de entregas, Entregas Gerais, Implementação de pipelines CI/CD e monitoramento de desempenho, Limpeza, transformação e visualização de dados |
+| Gian Carlos de Freitas Moroni |22000843 |Scrum Master |Gestão do cronograma, reuniões diárias, Aplicação estatísticos na análise de dados, Elaboração de modelos probabilísticos e geração de insights |  
+| Haryel Araújo de Oliveira Caliari |22001470 |Membro | Escalabilidade e Eficiência na infraestrutura de dados |
+| Jackeline Ayumi Kanekiyo |22001803 |Membro |Gerenciamento e processamento de dados, Implementação de arquiteturas distribuídas e Otimização da performance dos dados. |  
 
-### Membros da Equipe e Responsabilidades
+## 📌 Objetivo do Projeto  
+Desenvolver um simulador de pipeline de dados em larga escala, integrando:  
+- Análise Exploratória de Dados (R).  
+- Big Data (Spark).  
+- DevOps (Vagrant e Docker/Kubernetes).  
 
-**Caio Grilo da Cunha (22000245):**
+## 🔧 Ferramentas Utilizadas  
+- Python (Pandas, Matplotlib, Numpy, Faker, sklearn, nltk).  
+- R (Corrplot).
+- Apache Spark.
+- Docker/Kubernetes.
 
-* Análise Exploratória de Dados: Realizar a limpeza, transformação e visualização de dados, identificando tendências, padrões e outliers.
-
-* DevOps: Configuração de infraestrutura como código, implementação de pipelines CI/CD e monitoramento de desempenho dos sistemas.
-
-**Gian Carlos de Freitas Moroni (22000843):**
-
-* Probabilidade e Estatística: Aplicação de métodos estatísticos para análise de dados, elaboração de modelos probabilísticos e geração de insights confiáveis.
-
-**Haryel Araújo de Oliveira Caliari (22001470):**
-
-* DevOps: Automação de processos de integração e entrega contínua, garantindo escalabilidade e eficiência na infraestrutura de dados.
-
-**Jackeline Ayumi Kanekiyo (22001803):**
-
-* Big Data: Gerenciamento e processamento de grandes volumes de dados, implementação de arquiteturas distribuídas e otimização da performance dos sistemas de dados.
-
-### Organização e Gestão de Tarefas
+## 📆 Organização e Gestão de Tarefas
 A equipe utilizará [ClickUp](https://app.clickup.com/9013521190/v/s/90132183959) para acompanhar o progresso das atividades, garantindo uma colaboração eficiente e uma boa distribuição de responsabilidades.
 
-### Como Contribuir
-
-1. Clone o repositório:
-     ```
-    git clone https://github.com/seu-repositorio.git
-    ```
-2. Crie uma branch para sua tarefa:
-     ```
-    git checkout -b minha-tarefa
-    ```
-3. Faça as alterações necessárias e commit:
-     ```
-     git commit -m "Descrição da alteração"
-    ```
-4. Suba as mudanças para o repositório:
-     ```
-     git push origin minha-tarefa
-    ```
+## 📂 Estrutura do Repositório  
