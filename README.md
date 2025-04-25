@@ -33,9 +33,15 @@ A equipe utilizará [ClickUp](https://app.clickup.com/9013521190/v/s/90132183959
 
 ## 📂 Estrutura do Repositório
 
+<<<<<<< HEAD
+
+
+=======
 ```mermaid
 graph TD
-A[VM1: Gerador de Dados] -->|Envia dados| B[VM2: Banco de Dados MySQL]
-B -->|Fornece dados| C[VM3: Dashboard/Aplicação Web]
+A[Docker 1: Gerador de Dados] -->|Envia dados| B[Docker 2: Análise de Dados] -->|Envia dados| C[Docker 3: Big Data] -->|Envia dados| D[Docker 4: Banco de Dados MySQL]
+D -->|Fornece dados| C[VM3: Dashboard/Aplicação Web]
 C -->|Visualização| D[Usuário Final]
 ```
+
+>>>>>>> f3a6db7915f4b45c1c2c992b9c538c30b9e882d1
