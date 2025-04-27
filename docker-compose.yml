@@ -1,53 +1,13 @@
-version: "3.8"
+version: "3"
 
 services:
-  data-generator:
+  container1:
+    image: hello-world
+  container2:
+    image: hello-world
+  gerador-dados:
     build:
       context: .
-      dockerfile: devops/docker/data-generator/Dockerfile
+      dockerfile: Dockerfile
     volumes:
-      - /data/raw:/app/data
-    depends_on:
-      mysql:
-        condition: service_healthy
-    environment:
-      - MYSQL_HOST=mysql
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=senha123
-
-  mysql:
-    build:
-      context: ./devops
-      dockerfile: docker/mysql/Dockerfile
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: senha123
-      MYSQL_DATABASE: ist_data
-    volumes:
-      - mysql-data:/var/lib/mysql
-      - ./devops/docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 5s
-      timeout: 10s
-      retries: 3
-
-  dashboard:
-    build:
-      context: .
-      dockerfile: devops/docker/shiny-dashboard/Dockerfile
-    ports:
-      - "3838:3838"
-    depends_on:
-      mysql:
-        condition: service_healthy
-    volumes:
-      - ./docs/dashboard:/srv/shiny-server
-    environment:
-      - MYSQL_HOST=mysql
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=senha123
-
-volumes:
-  mysql-data:
+      - ./data:/data

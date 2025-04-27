@@ -1,4 +1,0 @@
-pandas
-numpy
-faker
-scikit-learn
