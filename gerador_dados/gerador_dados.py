@@ -27,6 +27,35 @@ niveis_educacionais = [
     "Fundamental", "Médio", "Superior", "fundamnetal", "medio incompleto", "superio", None, ""
 ]
 
+# Lista de cidades brasileiras de todas as regiões
+cidades_brasileiras = [
+    # Região Norte
+    "Manaus", "Belém", "Porto Velho", "Rio Branco", "Macapá", "Boa Vista", "Santarém", "Palmas",
+    
+    # Região Nordeste
+    "Salvador", "Fortaleza", "Recife", "São Luís", "Maceió", "Natal", "João Pessoa", "Teresina", "Aracaju", "Feira de Santana",
+    
+    # Região Centro-Oeste
+    "Brasília", "Goiânia", "Campo Grande", "Cuiabá", "Anápolis", "Dourados", "Rio Verde",
+    
+    # Região Sudeste
+    "São Paulo", "Rio de Janeiro", "Belo Horizonte", "Vitória", "Campinas", "São José dos Campos", "Ribeirão Preto", "Uberlândia",
+    
+    # Região Sul
+    "Curitiba", "Porto Alegre", "Florianópolis", "Londrina", "Maringá", "Caxias do Sul", "Pelotas", "Joinville"
+]
+
+def escolher_cidade():
+    # 90% chance de cidade válida, 5% de cidade inválida, 5% de missing
+    prob = random.random()
+    if prob < 0.9:
+        return random.choice(cidades_brasileiras)
+    elif prob < 0.95:
+        # Gerar cidade inválida (nome incompleto ou estrangeira)
+        return random.choice(["", "New York", "xyz", "São", "Santa", fake.city()])
+    else:
+        return None
+
 # Funções para gerar dados com erros
 def escolher_doenca():
     if random.random() < 0.6:
@@ -52,6 +81,23 @@ def gerar_nome():
     if random.random() < 0.02:  # 2% de chance de erro
         nome = nome[:random.randint(2, len(nome)//2)]
     return nome
+
+def gerar_genero():
+    generos = ["Masculino", "Feminino", "masculino", "feminino", "M", "F", "m", "f", "Não informado", None]
+    # Probabilidades:
+    # 40% Masculino (todas variações)
+    # 40% Feminino (todas variações)
+    # 15% Não informado
+    # 5% None (missing)
+    prob = random.random()
+    if prob < 0.4:
+        return random.choice(["Masculino", "masculino", "M", "m"])
+    elif prob < 0.8:
+        return random.choice(["Feminino", "feminino", "F", "f"])
+    elif prob < 0.95:
+        return "Não informado"
+    else:
+        return None
 
 def gerar_data_teste():
     if random.random() < 0.02:
@@ -92,18 +138,19 @@ for _ in range(total_registros):
     registro = {}
     registro["id"] = fake.uuid4()
     registro["nome"] = gerar_nome()
+    registro["genero"] = gerar_genero()
     
     if random.random() < 0.6:
         # Pessoa doente
         doenca = escolher_doenca()
-        registro["doenca"] = doenca
         registro["idade"] = gerar_idade(doenca)
+        registro["doenca"] = doenca
     else:
         # Pessoa saudável
-        registro["doenca"] = "Nenhuma"
         registro["idade"] = random.randint(0, 90)
+        registro["doenca"] = "Nenhuma"
 
-    registro["localidade"] = fake.city() if random.random() > 0.01 else None
+    registro["localidade"] = escolher_cidade()  # Usando a nova função para cidades
     registro["nivel_educacional"] = random.choice(niveis_educacionais)
     registro["renda_media"] = gerar_renda(registro["nivel_educacional"])
     registro["data_teste"] = gerar_data_teste()

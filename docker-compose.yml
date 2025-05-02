@@ -1,13 +1,16 @@
 version: "3"
 
 services:
-  container1:
-    image: hello-world
-  container2:
-    image: hello-world
   gerador-dados:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: ./gerador_dados
     volumes:
       - ./data:/data
+    container_name: gerador-dados
+
+  analise-r:
+    build: ./analise_r
+    volumes:
+      - ./data:/data
+    depends_on:
+      - gerador-dados
+    container_name: analise-r
