@@ -5,7 +5,6 @@ services:
     build: ./gerador_dados
     volumes:
       - ./data:/data
-    container_name: gerador-dados
 
   analise-r:
     build: ./analise_r
@@ -13,18 +12,17 @@ services:
       - ./data:/data
     depends_on:
       - gerador-dados
-    container_name: analise-r
 
   jenkins:
-    image: jenkins/jenkins:lts
+    build: ./jenkins_custom
     container_name: jenkins
     ports:
       - "8080:8080"
       - "50000:50000"
     volumes:
       - jenkins_home:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock # Permite que o Jenkins use Docker
-    user: root # Permite instalar plugins e usar o socket docker
+      - /var/run/docker.sock:/var/run/docker.sock
+    user: root
     restart: unless-stopped
 
 volumes:
