@@ -4,7 +4,7 @@ library(dplyr)
 library(tidyr)
 
 # Limpeza e Tratamento de Dados de IST
-caminho <- "../data/dados_ist_realistas.csv"
+caminho <- read.csv("/data/dados_ist_realistas.csv")
 dados <- read.csv(caminho)
 
 ## 1. Padronização de Dados
