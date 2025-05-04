@@ -12,7 +12,10 @@ ists = {
     "Sífilis": {"idade_media": 30, "idade_desvio": 10},
     "Gonorreia": {"idade_media": 28, "idade_desvio": 8},
     "HPV": {"idade_media": 26, "idade_desvio": 6},
+    "Clamídia": {"idade_media": 24, "idade_desvio": 5},
+    "Herpes Genital": {"idade_media": 29, "idade_desvio": 6},
 }
+
 
 outras_doencas = {
     "Gripe": {"idade_media": 25, "idade_desvio": 15},
