@@ -18,7 +18,7 @@ Desenvolver um simulador de pipeline de dados em larga escala, integrando:
 
 - Análise Exploratória de Dados (R).
 - Big Data (Spark).
-- DevOps (Vagrant e Docker/Kubernetes)
+- DevOps (Vagrant e Docker/Kubernetes).
 
 ## 🔧 Ferramentas Utilizadas
 
