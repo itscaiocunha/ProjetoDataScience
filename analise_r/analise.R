@@ -1,71 +1,125 @@
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
-library(ggplot2)
-library(dplyr)
-library(tidyr)
+```{r}
+dados = read.csv("dados_ist_realistas.csv", sep = ',', stringsAsFactors = TRUE)
+head(dados)
+str(dados)
+str(dados)
+summary(dados)
 
-# Limpeza e Tratamento de Dados de IST
-caminho <- read.csv("/data/dados_ist_realistas.csv")
-dados <- read.csv(caminho)
+```
 
-## 1. Padronização de Dados
-
-# Padronizar colunas categóricas
-dados <- dados %>%
-  mutate(
-    genero = toupper(trimws(genero)),
-    doenca = toupper(trimws(doenca)),
-    localidade = tools::toTitleCase(tolower(localidade))
-  )
-
-# Verificar valores únicos
-list(
-  genero = unique(dados$genero),
-  doenca = unique(dados$doenca)
-)
-
-## 2. Tratamento de Valores Ausentes
-
-# Identificar valores ausentes
+```{r}
+# verificar valores ausentes
 colSums(is.na(dados))
 
-# Opcional: Preencher valores ausentes (exemplo para idade)
-dados <- dados %>%
-  mutate(idade = ifelse(is.na(idade), median(idade, na.rm = TRUE), idade))
+# substituir outliers em renda_media por mediana
+mediana_renda = median(dados$renda_media, na.rm = TRUE)
+mediana_renda
+dados$renda_media[dados$renda_media %in% out_renda] = mediana_renda
 
-## 3. Tratamento de Outliers
-identificar_outliers <- function(x) {
-  q <- quantile(x, c(0.25, 0.75), na.rm = TRUE)
-  iqr <- q[2] - q[1]
-  which(x < (q[1] - 1.5*iqr) | x > (q[2] + 1.5*iqr))
-}
+# substituir outliers em idade por mediana
+mediana_idade = median(dados$idade, na.rm = TRUE)
+mediana_idade
+dados$idade[dados$idade %in% out_idade] = mediana_idade
 
-# Outliers em idade
-outliers_idade <- identificar_outliers(dados$idade)
-dados$idade[outliers_idade] <- median(dados$idade, na.rm = TRUE)
+# converter datas
+dados$data_teste = as.Date(dados$data_teste)
 
-# Visualização pós-tratamento
-boxplot(dados$idade, main = "Idade (após tratamento de outliers)")
+str(dados)
+```
 
+```{r}
+# Tratamento de gênero
+dados$genero = tolower(dados$genero)
+dados$genero = case_when(
+  dados$genero %in% c("m", "masculino", "homem") ~ "Masculino",
+  dados$genero %in% c("f", "feminino", "mulher") ~ "Feminino",
+  is.na(dados$genero) | dados$genero %in% c("", "não informado") ~ "Não informado",
+  TRUE ~ dados$genero
+)
 
-## 4. Transformação de Variáveis
-# Converter datas
-dados <- dados %>%
-  mutate(
-    data_teste = as.Date(data_teste),
-    mes_teste = format(data_teste, "%Y-%m")
-  )
+# Verificar gênero
+table(dados$genero)
+```
 
-# Criar variáveis derivadas
-dados <- dados %>%
-  mutate(
-    faixa_etaria = cut(idade, 
-                      breaks = c(0, 20, 30, 40, 50, 60, Inf),
-                      labels = c("0-20", "21-30", "31-40", "41-50", "51-60", "60+"))
-  )
+```{r}
+# Tratamento de doenças
+dados$doenca = tolower(dados$doenca)
+dados$doenca = case_when(
+  dados$doenca %in% c("", "na", "n/a", "nenhuma") ~ "Nenhuma",
+  str_detect(dados$doenca, "hiv") ~ "HIV",
+  str_detect(dados$doenca, "s[ií]filis") ~ "Sífilis",
+  str_detect(dados$doenca, "hpv") ~ "HPV",
+  str_detect(dados$doenca, "gonorreia") ~ "Gonorreia",
+  str_detect(dados$doenca, "c[aâ]ncer") ~ "Câncer",
+  str_detect(dados$doenca, "diabetes") ~ "Diabetes",
+  str_detect(dados$doenca, "asma") ~ "Asma",
+  str_detect(dados$doenca, "gripe") ~ "Gripe",
+  str_detect(dados$doenca, "avc") ~ "AVC",
+  TRUE ~ dados$doenca
+)
 
+# Verificar doenças
+table(dados$doenca)
+```
 
-## 5. Salvando Dados Processados
-write.csv(dados, "/data/analise_resultado.csv", row.names = FALSE)
+```{r}
+# Tratamento de nível educacional
+dados$nivel_educacional = tolower(dados$nivel_educacional)
+dados$nivel_educacional = case_when(
+  str_detect(dados$nivel_educacional, "fundamnetal") ~ "Fundamental",
+  str_detect(dados$nivel_educacional, "medio") ~ "Médio",
+  str_detect(dados$nivel_educacional, "superio") ~ "Superior",
+  is.na(dados$nivel_educacional) | dados$nivel_educacional == "" ~ "Não informado",
+  TRUE ~ str_to_title(dados$nivel_educacional)
+)
 
-print("Análise concluída. Resultado salvo em /data/analise_resultado.csv")
+# Verificar educação
+table(dados$nivel_educacional)
+```
 
+```{r}
+# Tratamento de datas
+dados$data_teste = as.Date(dados$data_teste)
+dados = dados[dados$data_teste <= Sys.Date(), ]  # Remove datas futuras
+```
+
+```{r}
+# Análise de outliers - Renda
+boxplot(dados$renda_media,
+        main="Boxplot - Renda Média",
+        ylab = "R$",
+        col="lightblue", na.rm = TRUE)
+
+out_renda = boxplot.stats(dados$renda_media)$out
+mediana_renda = median(dados$renda_media, na.rm = TRUE)
+dados$renda_media[dados$renda_media %in% out_renda] = mediana_renda
+```
+
+```{r}
+# Análise de outliers - Idade
+boxplot(dados$idade,
+        main="Boxplot - Idade",
+        ylab = "Anos",
+        col="salmon", na.rm = TRUE)
+
+out_idade = boxplot.stats(dados$idade)$out
+mediana_idade = median(dados$idade, na.rm = TRUE)
+dados$idade[dados$idade %in% out_idade] = mediana_idade
+```
+
+```{r}
+# Verificar valores ausentes
+colSums(is.na(dados))
+
+# Verificar estrutura final
+str(dados)
+summary(dados)
+
+# Salvar dados tratados
+write.csv(dados, "dados_ist_tratados.csv", row.names = FALSE)
+cat("Dados tratados com sucesso! Arquivo salvo como 'dados_ist_tratados.csv'")
+```
+
+```{r}
+head(dados_tratados)
+```
