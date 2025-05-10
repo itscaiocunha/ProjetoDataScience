@@ -137,4 +137,4 @@ for _ in range(total_registros):
 # Criando e salvando o DataFrame
 df = pd.DataFrame(data)
 df.to_csv("/data/dados_ist_realistas.csv", index=False, encoding='utf-8')
-print("Dados gerados com coerência entre nome e gênero, e erros humanos incluídos!")
+print("Dados gerados com realismo e erros humanos incluídos!")
