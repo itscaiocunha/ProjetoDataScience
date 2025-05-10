@@ -1,0 +1,97 @@
+---
+title: "Tratamento de Dados"
+---
+
+Importação de Dados
+```{r}
+dados = read.csv("../data/dados_ist_realistas.csv", sep = ",", stringsAsFactors = T)
+```
+
+Analise Inicial
+```{r}
+head(dados)
+summary(dados)
+str(dados)
+```
+Análises Boxplot
+```{r}
+#Idade dos Pacientes
+summary(dados$idade)
+boxplot(dados$idade, main="Boxplot - Idade dos Pacientes",
+        ylab = "Idades (em Anos)",
+        col="lightblue")
+hist(dados$idade)
+
+out_idade = boxplot.stats(dados$idade)$out
+out_idade  #Não existe discrepancia nas Idades
+
+
+#Renda Média dos Pacientes
+summary(dados$renda_media)
+boxplot(dados$renda_media, main="Boxplot - Renda Média dos Pacientes",
+        ylab = "Valor em Reais (R$)",
+        col="red",
+        outline = F)
+
+out_renda = boxplot.stats(dados$renda_media)$out
+length(out_renda)
+out_renda
+dados[dados$renda_media %in% out_renda, ]
+```
+
+Tratamento dos Dados Numéricos
+```{r}
+#Verificar valores ausentes (NA's)
+colSums(is.na(dados))
+
+#Renda Média dos Pacientes
+mediana_renda = median(dados$renda_media, na.rm = TRUE)
+mediana_renda
+dados$renda_media[is.na(dados$renda_media)] = mediana_renda
+#Os outlines não foram removidos devido a importancia que apresentam ao projeto
+
+#Correção de Datas
+dados$data_teste = as.Date(dados$data_teste)
+str(dados)
+```
+
+Tratamento dos Dados Categóricos
+```{r}
+#Genero do Paciente
+summary(dados$genero)
+
+#Padronização de Generos
+dados$genero[dados$genero == "f" | dados$genero == "F" | dados$genero == "feminino"] = "Feminino"
+dados$genero[dados$genero == "m" | dados$genero == "M" | dados$genero == "masculino"] = "Masculino"
+dados$genero[dados$genero == "Não informado" | dados$genero == ""] = "Masculino"
+
+dados$genero = factor(dados$genero)
+countsGenero = table(dados$genero)
+countsGenero
+barplot(countsGenero, main="Genero", xlab="Genero")
+
+#Doença dos Pacientes
+countsDoenca = table(dados$doenca)
+countsDoenca
+barplot(countsDoenca, main="Doenças", xlab="Doenças")
+
+#Localidade dos Pacientes
+dados$localidade[dados$localidade == ""] = "Não Informado"
+
+#Nível Educacional dos Pacientes
+summary(dados$nivel_educacional)
+
+#Padronização de Educação
+dados$nivel_educacional[dados$nivel_educacional == "fundamnetal" | dados$nivel_educacional == "medio incompleto"] = "Fundamental"
+dados$nivel_educacional[dados$nivel_educacional == "superio" ] = "Superior"
+dados$nivel_educacional[dados$nivel_educacional == ""] = "Fundamental"
+
+dados$nivel_educacional = factor(dados$nivel_educacional)
+countsEducacao = table(dados$nivel_educacional)
+countsEducacao
+barplot(countsEducacao, main="Educação", xlab = "Nível de Estudo")
+```
+```{r}
+write.csv(dados, "../data/dados_ist_tratados.csv", row.names = FALSE)
+```
+
