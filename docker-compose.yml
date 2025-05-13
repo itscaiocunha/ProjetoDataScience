@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   gerador-dados:
     build: ./gerador_dados
