@@ -1,12 +1,19 @@
 FROM r-base:latest
 
+# Instala dependências do sistema necessárias para pacotes R
+RUN apt-get update && apt-get install -y \
+    libcurl4-openssl-dev \
+    libssl-dev \
+    libxml2-dev \
+    && apt-get clean
+
 WORKDIR /app
 
-# Instala os pacotes necessários
-RUN R -e "install.packages(c('rmarkdown', 'knitr', 'ggplot2', 'dplyr', 'tidyr', 'tools'), repos='http://cran.r-project.org')"
+# Instala pacotes R necessários
+RUN R -e "install.packages(c('knitr', 'ggplot2', 'dplyr', 'tidyr', 'tools'), repos='http://cran.r-project.org')"
 
-# Copia o arquivo de análise
-COPY analise.Rmd .
+# Copia o script de análise
+COPY analise.R .
 
-# Comando para renderizar o Rmd como HTML (ou outro formato)
-CMD ["R", "-e", "rmarkdown::render('analise.Rmd', output_format = 'html_document')"]
+# Comando padrão: executa o script
+CMD ["Rscript", "analise.R"]
