@@ -4,12 +4,20 @@ services:
     volumes:
       - ./data:/data
 
-  analise-r:
+  analise-dados:
     build: ./analise_r
     volumes:
       - ./data:/data
     depends_on:
       - gerador-dados
+
+  bigdata:
+    build:
+      context: ./bigdata
+    volumes:
+      - ./data:/data
+    depends_on:
+      - analise-dados
 
   jenkins:
     build: ./jenkins_custom

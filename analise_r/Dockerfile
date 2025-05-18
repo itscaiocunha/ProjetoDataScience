@@ -1,6 +1,6 @@
 FROM r-base:latest
 
-# Instala dependências do sistema necessárias para pacotes R
+# Instala dependências do sistema
 RUN apt-get update && apt-get install -y \
     libcurl4-openssl-dev \
     libssl-dev \
@@ -12,8 +12,12 @@ WORKDIR /app
 # Instala pacotes R necessários
 RUN R -e "install.packages(c('knitr', 'ggplot2', 'dplyr', 'tidyr', 'tools'), repos='http://cran.r-project.org')"
 
-# Copia o script de análise
+# Copia o script R e o script de espera
 COPY analise.R .
+COPY wait_for_file.sh .
 
-# Comando padrão: executa o script
-CMD ["Rscript", "analise.R"]
+# Dá permissão de execução ao script
+RUN chmod +x wait_for_file.sh
+
+# Usa o script como comando principal
+CMD ["./wait_for_file.sh"]
