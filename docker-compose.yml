@@ -2,13 +2,13 @@ services:
   gerador-dados:
     build: ./gerador_dados
     volumes:
-      - ./data:/data
+      - "./data:/data"
 
   postgres:
     image: postgres:15
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
+      POSTGRES_USER: admin_ist
+      POSTGRES_PASSWORD: istunifeob
       POSTGRES_DB: ist_db
     volumes:
       - pgdata:/var/lib/postgresql/data
@@ -18,55 +18,27 @@ services:
   analise-dados:
     build: ./analise_r
     volumes:
-      - ./data:/data
+      - "./data:/data"
     depends_on:
       - gerador-dados
       - postgres
 
-    # Opcional: Adicionar um healthcheck para o postgres para maior robustez
-    # depends_on:
-    #   postgres:
-    #     condition: service_healthy
-
-  # bigdata:
-  #   build:
-  #     context: ./bigdata
-  #   volumes:
-  #     - ./data:/data
-  #   depends_on:
-  #     - analise-dados
-  #     - postgres
-  #   environment:
-  #     DB_HOST: postgres
-  #     DB_NAME: ist_db
-  #     DB_USER: user
-  #     DB_PASSWORD: password
-
-  # grafana:
-  #   image: grafana/grafana
-  #   ports:
-  #     - "3000:3000"
-  #   environment:
-  #     - GF_SECURITY_ADMIN_USER=admin
-  #     - GF_SECURITY_ADMIN_PASSWORD=admin
-  #   depends_on:
-  #     - postgres
-  #   volumes:
-  #     - grafana_data:/var/lib/grafana
-
-  # jenkins:
-  #   build: ./jenkins_custom
-  #   container_name: jenkins
-  #   ports:
-  #     - "8080:8080"
-  #     - "50000:50000"
-  #   volumes:
-  #     - jenkins_home:/var/jenkins_home
-  #     - /var/run/docker.sock:/var/run/docker.sock
-  #   user: root
-  #   restart: unless-stopped
+  grafana:
+    image: grafana/grafana:10.4.1
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+    depends_on:
+      - postgres
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_LOG_LEVEL: debug
 
 volumes:
-  # jenkins_home:
-  # grafana_data:
   pgdata:
+  grafana-data:

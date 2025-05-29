@@ -92,8 +92,8 @@ write.csv(dados, "/data/dados_ist_tratados.csv", row.names = FALSE)
 db_host <- "postgres"
 db_port <- 5432
 db_name <- "ist_db"
-db_user <- "user"
-db_password <- "password"
+db_user <- "admin_ist"
+db_password <- "istunifeob"
 db_table_name <- "dados_ist_tratados"
 
 # Tentar conectar ao banco de dados

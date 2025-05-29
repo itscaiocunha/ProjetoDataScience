@@ -1,0 +1,11 @@
+apiVersion: 1
+
+providers:
+  - name: "Default" # Nome do provedor de dashboards
+    orgId: 1
+    folder: "" # A pasta onde o dashboard será criado (vazio para a raiz)
+    type: file
+    disableDeletion: false # Permite que o dashboard seja excluído pela UI, se necessário
+    editable: true # Permite editar o dashboard pela UI
+    options:
+      path: /var/lib/grafana/dashboards # Caminho DENTRO do contêiner onde os JSONs estarão

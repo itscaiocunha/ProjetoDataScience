@@ -1,0 +1,16 @@
+# ./grafana/provisioning/datasources/datasource.yaml
+apiVersion: 1
+
+datasources:
+  - name: ist_db_datasource
+    type: postgres
+    access: proxy
+    url: postgres:5432
+    database: ist_db
+    user: admin_ist
+    password: istunifeob
+    uid: postgres_ist_db_uid
+    isDefault: true
+    jsonData:
+      sslmode: "disable"
+      timeInterval: "1s"
