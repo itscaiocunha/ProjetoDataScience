@@ -3,6 +3,8 @@
 # Carregando pacotes necessários
 library(ggplot2)
 library(dplyr)
+library(RPostgreSQL)
+library(DBI) 
 
 # --- Importação de Dados ---
 dados <- read.csv("/data/dados_ist_realistas.csv", sep = ",", stringsAsFactors = TRUE)
@@ -83,3 +85,37 @@ barplot(countsEducacao, main="Educação", xlab="Nível de Estudo")
 
 # --- Exportação dos Dados Tratados ---
 write.csv(dados, "/data/dados_ist_tratados.csv", row.names = FALSE)
+
+
+# --- Exportação dos Dados Tratados para PostgreSQL ---
+# Detalhes da conexão com o banco de dados PostgreSQL
+db_host <- "postgres"
+db_port <- 5432
+db_name <- "ist_db"
+db_user <- "user"
+db_password <- "password"
+db_table_name <- "dados_ist_tratados"
+
+# Tentar conectar ao banco de dados
+tryCatch({
+  con <- DBI::dbConnect(RPostgreSQL::PostgreSQL(),
+                   host = db_host,
+                   port = db_port,
+                   dbname = db_name,
+                   user = db_user,
+                   password = db_password)
+
+  print(paste("\nConectado com sucesso ao banco de dados PostgreSQL:", db_name))
+
+  dbWriteTable(con, db_table_name, dados, row.names = FALSE, overwrite = TRUE)
+
+  print(paste("Dados tratados exportados com sucesso para a tabela '", db_table_name, "' no PostgreSQL.", sep=""))
+
+}, error = function(e) {
+  print(paste("\nErro ao conectar ou exportar para o PostgreSQL:", e$message))
+}, finally = {
+  if (exists("con") && !is.null(con)) {
+    DBI::dbDisconnect(con)
+    print("Desconectado do banco de dados PostgreSQL.")
+  }
+})

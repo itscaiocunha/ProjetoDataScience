@@ -4,32 +4,69 @@ services:
     volumes:
       - ./data:/data
 
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ist_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
   analise-dados:
     build: ./analise_r
     volumes:
       - ./data:/data
     depends_on:
       - gerador-dados
+      - postgres
 
-  bigdata:
-    build:
-      context: ./bigdata
-    volumes:
-      - ./data:/data
-    depends_on:
-      - analise-dados
+    # Opcional: Adicionar um healthcheck para o postgres para maior robustez
+    # depends_on:
+    #   postgres:
+    #     condition: service_healthy
 
-  jenkins:
-    build: ./jenkins_custom
-    container_name: jenkins
-    ports:
-      - "8080:8080"
-      - "50000:50000"
-    volumes:
-      - jenkins_home:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock
-    user: root
-    restart: unless-stopped
+  # bigdata:
+  #   build:
+  #     context: ./bigdata
+  #   volumes:
+  #     - ./data:/data
+  #   depends_on:
+  #     - analise-dados
+  #     - postgres
+  #   environment:
+  #     DB_HOST: postgres
+  #     DB_NAME: ist_db
+  #     DB_USER: user
+  #     DB_PASSWORD: password
+
+  # grafana:
+  #   image: grafana/grafana
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     - GF_SECURITY_ADMIN_USER=admin
+  #     - GF_SECURITY_ADMIN_PASSWORD=admin
+  #   depends_on:
+  #     - postgres
+  #   volumes:
+  #     - grafana_data:/var/lib/grafana
+
+  # jenkins:
+  #   build: ./jenkins_custom
+  #   container_name: jenkins
+  #   ports:
+  #     - "8080:8080"
+  #     - "50000:50000"
+  #   volumes:
+  #     - jenkins_home:/var/jenkins_home
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   user: root
+  #   restart: unless-stopped
 
 volumes:
-  jenkins_home:
+  # jenkins_home:
+  # grafana_data:
+  pgdata:

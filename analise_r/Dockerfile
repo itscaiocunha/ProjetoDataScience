@@ -5,12 +5,14 @@ RUN apt-get update && apt-get install -y \
     libcurl4-openssl-dev \
     libssl-dev \
     libxml2-dev \
+    libpq-dev \
+    postgresql-client \
     && apt-get clean
 
 WORKDIR /app
 
 # Instala pacotes R necessários
-RUN R -e "install.packages(c('knitr', 'ggplot2', 'dplyr', 'tidyr', 'tools'), repos='http://cran.r-project.org')"
+RUN R -e "install.packages(c('knitr', 'ggplot2', 'dplyr', 'tidyr', 'tools', 'RPostgreSQL'), repos='http://cran.r-project.org')"
 
 # Copia o script R e o script de espera
 COPY analise.R .
