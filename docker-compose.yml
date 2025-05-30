@@ -1,10 +1,12 @@
 services:
   gerador-dados:
+    container_name: gerador
     build: ./gerador_dados
     volumes:
       - "./data:/data"
 
   postgres:
+    container_name: postgres
     image: postgres:15
     environment:
       POSTGRES_USER: admin_ist
@@ -16,6 +18,7 @@ services:
       - "5432:5432"
 
   analise-dados:
+    container_name: analise
     build: ./analise_r
     volumes:
       - "./data:/data"
@@ -38,6 +41,17 @@ services:
       GF_SECURITY_ADMIN_USER: admin
       GF_SECURITY_ADMIN_PASSWORD: admin
       GF_LOG_LEVEL: debug
+
+  bigdata:
+    container_name: bigdata
+    build:
+      context: .
+      dockerfile: ./bigdata/Dockerfile
+    volumes:
+      - "./data:/data"
+      - "./bigdata_output:/app/output"
+    depends_on:
+      - analise-dados
 
 volumes:
   pgdata:
