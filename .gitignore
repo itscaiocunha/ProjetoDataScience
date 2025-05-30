@@ -3,6 +3,7 @@
 
 # Dados
 data/
+bigdata_output/
 
 # Vagrant
 .vagrant/
