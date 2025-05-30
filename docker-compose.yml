@@ -48,11 +48,24 @@ services:
       context: .
       dockerfile: ./bigdata/Dockerfile
     volumes:
-      - "./data:/data"
-      - "./bigdata_output:/app/output"
+      - ./data:/app/data
+      - ./bigdata_output:/app/output
     depends_on:
       - analise-dados
+
+  jenkins:
+    build: ./jenkins_custom
+    container_name: jenkins
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    user: root
+    restart: unless-stopped
 
 volumes:
   pgdata:
   grafana-data:
+  jenkins_home:

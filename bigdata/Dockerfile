@@ -45,7 +45,7 @@ RUN mkdir -p /data
 
 # Copie o arquivo CSV para o diretório /data dentro do container
 # O caminho de origem é relativo ao contexto de build (raiz do projeto)
-COPY data/dados_ist_tratados.csv /data/dados_ist_tratados.csv
+# COPY data/dados_ist_tratados.csv /data/dados_ist_tratados.csv
 
 # Configure as variáveis de ambiente para o Spark (JAVA_HOME)
 ENV JAVA_HOME="/opt/java/openjdk"
