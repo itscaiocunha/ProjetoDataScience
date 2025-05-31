@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Análise de Dados de ISTs com Spark</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <header>
+    <h1>Resultados da Análise de Dados de ISTs</h1>
+    <p>Projeto de Big Data com Apache Spark</p>
+  </header>
+
+  <main>
+    <section class="section-container">
+      <h2>Análises OLAP (SQL com Spark)</h2>
+      <div class="chart-grid">
+        <div class="chart-item">
+          <h3>Casos por Localidade</h3>
+          <img src="./bigdata_output/casos_por_localidade.png" alt="Gráfico de Casos por Localidade">
+        </div>
+        <div class="chart-item">
+          <h3>Média de Idade por Doença</h3>
+          <img src="./bigdata_output/media_idade_por_doenca.png" alt="Gráfico de Média de Idade por Doença">
+        </div>
+        <div class="chart-item">
+          <h3>Média de Renda por Escolaridade e Doença</h3>
+          <img src="./bigdata_output/media_renda_por_escolaridade_e_doenca.png"
+            alt="Gráfico de Média de Renda por Escolaridade e Doença">
+        </div>
+        <div class="chart-item">
+          <h3>Casos por Ano</h3>
+          <img src="./bigdata_output/casos_por_ano_olap.png" alt="Gráfico de Casos por Ano (OLAP)">
+        </div>
+      </div>
+    </section>
+
+    <section class="section-container">
+      <h2>Análises Hadoop (MapReduce com Spark)</h2>
+      <div class="chart-grid">
+        <div class="chart-item">
+          <h3>Média de Renda por Tipo de IST (MapReduce)</h3>
+          <img src="./bigdata_output/media_renda_mapreduce.png"
+            alt="Gráfico de Média de Renda por Tipo de IST (MapReduce)">
+        </div>
+        <div class="chart-item">
+          <h3>Distribuição de Casos por Faixa Etária (MapReduce)</h3>
+          <img src="./bigdata_output/distribuicao_faixa_etaria_mapreduce.png"
+            alt="Gráfico de Distribuição de Casos por Faixa Etária (MapReduce)">
+        </div>
+      </div>
+    </section>
+
+    <section class="section-container">
+      <h2>Gráficos Básicos Adicionais</h2>
+      <div class="chart-grid">
+        <div class="chart-item">
+          <h3>Número de Casos de IST por Ano</h3>
+          <img src="./bigdata_output/casos_por_ano.png" alt="Gráfico de Número de Casos de IST por Ano">
+        </div>
+      </div>
+    </section>
+
+    <section class="section-container">
+      <h2>Modelos de Classificação</h2>
+      <div class="chart-grid">
+        <div class="chart-item">
+          <h3>Matriz de Confusão</h3>
+          <img src="./bigdata_output/matriz_confusao.png" alt="Matriz de Confusão do Modelo de Classificação">
+        </div>
+        <div class="chart-item">
+          <h3>Curva ROC</h3>
+          <img src="./bigdata_output/curva_roc.png" alt="Curva ROC do Modelo de Classificação">
+        </div>
+      </div>
+    </section>
+
+    <section class="section-container">
+      <h2>Modelos de Clusterização (K-Means)</h2>
+      <div class="chart-grid">
+        <div class="chart-item">
+          <h3>Método do Cotovelo para K-Means</h3>
+          <img src="./bigdata_output/metodo_cotovelo.png" alt="Gráfico do Método do Cotovelo">
+        </div>
+        <div class="chart-item">
+          <h3>Clusters K-Means com PCA</h3>
+          <img src="./bigdata_output/clusters_kmeans.png" alt="Gráfico de Clusters K-Means com PCA">
+        </div>
+      </div>
+    </section>
+
+    <section class="section-container">
+      <h2>Visualização Geográfica</h2>
+      <p>Clique no botão abaixo para abrir o mapa interativo dos casos por localidade.</p>
+      <div class="button-container">
+        <a href="./bigdata_output/mapa_casos_localidade.html" target="_blank" class="map-button">Abrir Mapa
+          Interativo</a>
+      </div>
+    </section>
+
+    <section class="section-container">
+      <h2>Dashboards Interativos</h2>
+      <p>Acesse os dashboards do Grafana para explorar os dados em tempo real e de forma interativa.</p>
+      <div class="button-container">
+        <a href="http://localhost:3000" target="_blank" class="grafana-button">Abrir Grafana</a>
+      </div>
+      </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Análise de Dados de ISTs. Todos os direitos reservados.</p>
+  </footer>
+</body>
+
+</html>
